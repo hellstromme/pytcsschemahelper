@@ -312,7 +312,7 @@ class EmissionsReport(BaseModel):
     @model_validator(mode='after')
     def validate_auditor_link(self) -> 'EmissionsReport':
         """Ensure auditor_link is provided when independently verified."""
-        if (self.verification == VerificationType.INDEPENDENTLY_VERIFIED 
+        if (self.verification == VerificationType.INDEPENDENTLY_VERIFIED
             and self.auditor_link is None):
             raise ValueError(
                 'auditor_link is required when verification is "independently verified"'
@@ -374,7 +374,7 @@ doc = (
 ```python
 class TCSBuilder:
     """Fluent builder for TCS documents."""
-    
+
     def __init__(
         self,
         reporting_org_version: ReportingOrgVersion = DEFAULT_REPORTING_ORG_VERSION
@@ -384,7 +384,7 @@ class TCSBuilder:
         self._reports: list[EmissionsReport] = []
         self._current_report: Optional[dict] = None
         self._current_tcs: Optional[dict] = None
-    
+
     def organisation(
         self,
         name: str,
@@ -400,7 +400,7 @@ class TCSBuilder:
             registered_country=country
         )
         return self
-    
+
     def add_report(
         self,
         from_date: str | date,
@@ -414,7 +414,7 @@ class TCSBuilder:
         """Start a new emissions report."""
         # Finalize previous report if exists
         self._finalize_current_report()
-        
+
         self._current_report = {
             "schema_version": emissions_report_version,
             "reporting_unit": reporting_unit,
@@ -428,7 +428,7 @@ class TCSBuilder:
         }
         self._current_tcs = {"schema_version": tcs_version}
         return self
-    
+
     def upstream(
         self,
         software: Optional[float] = None,
@@ -443,16 +443,16 @@ class TCSBuilder:
             emissions["software"] = Emissions(emissions=software, notes=software_notes)
         if employee_hardware is not None:
             emissions["employee_hardware"] = Emissions(
-                emissions=employee_hardware, 
+                emissions=employee_hardware,
                 notes=employee_hardware_notes
             )
         # ... other fields
-        
+
         self._current_tcs["upstream_emissions"] = UpstreamEmissions(**emissions)
         return self
-    
+
     # Similar methods for direct(), indirect(), downstream()
-    
+
     def add_disclosure(
         self,
         url: str,
@@ -464,20 +464,20 @@ class TCSBuilder:
             Disclosure(url=url, doc_type=DocType(doc_type), description=description)
         )
         return self
-    
+
     def build(self) -> TCSDocument:
         """Build and validate the complete TCS document."""
         self._finalize_current_report()
-        
+
         if self._organisation is None:
             raise ValueError("Organisation details are required")
-        
+
         return TCSDocument(
             schema_version=self._version,
             organisation=self._organisation,
             emissions_reports=self._reports
         )
-    
+
     def _finalize_current_report(self) -> None:
         """Finalize the current report and add to list."""
         if self._current_report is not None:
@@ -498,7 +498,7 @@ class TCSBuilder:
 ```python
 class TCSDocument(BaseModel):
     # ... fields ...
-    
+
     def to_json(
         self,
         indent: Optional[int] = 2,
@@ -510,11 +510,11 @@ class TCSDocument(BaseModel):
             exclude_none=exclude_none,
             by_alias=True
         )
-    
+
     def to_dict(self, exclude_none: bool = True) -> dict:
         """Convert to dictionary."""
         return self.model_dump(exclude_none=exclude_none, by_alias=True)
-    
+
     def save(
         self,
         path: str | Path,
@@ -523,18 +523,18 @@ class TCSDocument(BaseModel):
         """Save to file."""
         path = Path(path)
         path.write_text(self.to_json(indent=indent))
-    
+
     @classmethod
     def from_json(cls, json_str: str) -> 'TCSDocument':
         """Parse from JSON string."""
         return cls.model_validate_json(json_str)
-    
+
     @classmethod
     def load(cls, path: str | Path) -> 'TCSDocument':
         """Load from file."""
         path = Path(path)
         return cls.from_json(path.read_text())
-    
+
     @classmethod
     def from_url(cls, url: str) -> 'TCSDocument':
         """Fetch and parse from URL."""
@@ -551,7 +551,7 @@ Dates must serialize to ISO 8601 format (`YYYY-MM-DD`):
 class ReportingPeriod(BaseModel):
     from_date: date
     to_date: date
-    
+
     class Config:
         json_encoders = {
             date: lambda v: v.isoformat()
@@ -585,11 +585,11 @@ def validate_against_schema(
 ) -> ValidationResult:
     """
     Validate document against official TCS JSON Schema.
-    
+
     Args:
         document: TCS document (model, dict, or JSON string)
         schema_url: Override schema URL (defaults to official router schema)
-    
+
     Returns:
         ValidationResult with is_valid, errors, and warnings
     """
@@ -599,7 +599,7 @@ class ValidationResult:
     is_valid: bool
     errors: list[ValidationError]
     warnings: list[ValidationWarning]
-    
+
     def raise_for_errors(self) -> None:
         """Raise exception if validation failed."""
         if not self.is_valid:
@@ -726,11 +726,11 @@ def cli():
 def validate(file: str, schema_version: Optional[str], strict: bool):
     """Validate a TCS document."""
     console = Console()
-    
+
     try:
         doc = TCSDocument.load(file)
         result = validate_against_schema(doc, schema_version)
-        
+
         if result.is_valid:
             console.print("✓ Document is valid", style="green")
         else:
@@ -738,7 +738,7 @@ def validate(file: str, schema_version: Optional[str], strict: bool):
             for error in result.errors:
                 console.print(f"  - {error.path}: {error.message}")
             raise SystemExit(1)
-            
+
     except Exception as e:
         console.print(f"Error: {e}", style="red")
         raise SystemExit(1)
@@ -748,11 +748,11 @@ def validate(file: str, schema_version: Optional[str], strict: bool):
 def totals(file: str):
     """Calculate emission totals from a TCS document."""
     doc = TCSDocument.load(file)
-    
+
     table = Table(title="Emissions Summary (kgCO2e)")
     table.add_column("Category")
     table.add_column("Total", justify="right")
-    
+
     for report in doc.emissions_reports:
         # Calculate totals per category
         ...
@@ -924,11 +924,11 @@ class TestEmissions:
         e = Emissions(emissions=1000, notes="Test")
         assert e.emissions == 1000
         assert e.notes == "Test"
-    
+
     def test_negative_emissions_rejected(self):
         with pytest.raises(ValidationError):
             Emissions(emissions=-100)
-    
+
     def test_notes_optional(self):
         e = Emissions(emissions=500)
         assert e.notes is None
@@ -947,7 +947,7 @@ class TestTCSBuilder:
         )
         assert doc.organisation.organisation_name == "Test Corp"
         assert len(doc.emissions_reports) == 1
-    
+
     def test_auditor_link_required_for_verified(self):
         with pytest.raises(ValidationError):
             TCSBuilder()
@@ -965,7 +965,7 @@ class TestSerialization:
         json_str = sample_document.to_json()
         loaded = TCSDocument.from_json(json_str)
         assert loaded == sample_document
-    
+
     def test_date_format(self, sample_document):
         json_str = sample_document.to_json()
         assert '"from_date": "2024-01-01"' in json_str
@@ -992,16 +992,16 @@ Use Google-style docstrings:
 def calculate_total_emissions(document: TCSDocument) -> float:
     """
     Calculate total emissions across all categories and reports.
-    
+
     Args:
         document: A valid TCS document
-        
+
     Returns:
         Total emissions in kgCO2e
-        
+
     Raises:
         TCSValidationError: If document is invalid
-        
+
     Example:
         >>> doc = TCSDocument.load("tcs.json")
         >>> total = calculate_total_emissions(doc)
@@ -1102,7 +1102,7 @@ doc = (
         open_corporates_url="https://opencorporates.com/companies/gb/12345678",
         country="England"
     )
-    
+
     # 2024 Report
     .add_report(
         from_date=date(2024, 1, 1),
@@ -1146,7 +1146,7 @@ doc = (
         network_data_transfer=3000,
         downstream_infrastructure=2000
     )
-    
+
     # 2023 Report (historical)
     .add_report(
         from_date=date(2023, 1, 1),
@@ -1157,7 +1157,7 @@ doc = (
     .direct(onsite_employee_hardware=6000)
     .indirect(cloud_services=38000, saas=22000)
     .downstream(customer_devices=6000)
-    
+
     .build()
 )
 
