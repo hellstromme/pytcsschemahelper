@@ -31,8 +31,6 @@ ignore = [
 [lint.per-file-ignores]
 # Allow unused imports in __init__.py files (common for re-exports)
 "__init__.py" = ["F401"]
-# Allow assert statements in tests
-"tests/**" = ["S101"]
 
 [lint.isort]
 # Configure import sorting
