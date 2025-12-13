@@ -1,0 +1,45 @@
+# Pre-commit hooks for pytcsschemahelper
+# See https://pre-commit.com for more information
+
+repos:
+  # Standard pre-commit hooks for common file issues
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+      - id: end-of-file-fixer
+        name: Fix end of files
+      - id: check-yaml
+        name: Check YAML files
+      - id: check-toml
+        name: Check TOML files
+      - id: check-added-large-files
+        name: Check for added large files
+        args: ['--maxkb=500']
+
+  # Ruff - Fast Python linter and formatter (replaces flake8, isort, black)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      # Run the linter
+      - id: ruff
+        name: Ruff linter
+        args: [--fix]
+      # Run the formatter
+      - id: ruff-format
+        name: Ruff formatter
+
+  # Mypy - Static type checker for Python
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        name: Mypy type checker
+        args: [--strict, --ignore-missing-imports]
+        additional_dependencies:
+          - pydantic>=2.0
+          - types-python-dateutil
+          - jsonschema>=4.0
+          - typing-extensions>=4.0
+        files: ^src/

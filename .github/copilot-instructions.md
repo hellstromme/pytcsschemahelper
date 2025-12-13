@@ -208,7 +208,7 @@ def test_emissions_validation():
     # Valid emissions
     e = Emissions(emissions=1000, notes="Test")
     assert e.emissions == 1000
-    
+
     # Negative emissions should fail
     with pytest.raises(ValidationError):
         Emissions(emissions=-100)
@@ -222,16 +222,16 @@ Use Google-style docstrings with examples:
 def calculate_total_emissions(document: TCSDocument) -> float:
     """
     Calculate total emissions across all categories and reports.
-    
+
     Args:
         document: A valid TCS document
-        
+
     Returns:
         Total emissions in kgCO2e
-        
+
     Raises:
         TCSValidationError: If document is invalid
-        
+
     Example:
         >>> doc = TCSDocument.load("tcs.json")
         >>> total = calculate_total_emissions(doc)
