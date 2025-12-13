@@ -42,4 +42,4 @@ repos:
           - types-python-dateutil
           - jsonschema>=4.0
           - typing-extensions>=4.0
-        files: ^src/
+        files: ^src/.*\.py$
