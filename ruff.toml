@@ -1,0 +1,45 @@
+# Ruff configuration for pytcsschemahelper
+# https://docs.astral.sh/ruff/configuration/
+
+# Target Python version (minimum supported)
+target-version = "py39"
+
+# Line length (black-compatible default)
+line-length = 88
+
+# Source directories for import resolution
+src = ["src", "tests"]
+
+[lint]
+# Enable these rule sets
+select = [
+    "E",    # pycodestyle errors
+    "F",    # Pyflakes
+    "W",    # pycodestyle warnings
+    "I",    # isort (import sorting)
+    "UP",   # pyupgrade (Python upgrade suggestions)
+    "B",    # flake8-bugbear (common bugs)
+    "SIM",  # flake8-simplify
+    "RUF",  # Ruff-specific rules
+]
+
+# Rules to ignore
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+]
+
+[lint.per-file-ignores]
+# Allow unused imports in __init__.py files (common for re-exports)
+"__init__.py" = ["F401"]
+
+[lint.isort]
+# Configure import sorting
+known-first-party = ["pytcsschemahelper"]
+# Use one import per line for 'from' imports
+force-single-line = false
+lines-after-imports = 2
+
+[format]
+# Formatter configuration
+quote-style = "double"
+indent-style = "space"
