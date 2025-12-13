@@ -44,9 +44,6 @@ jobs:
       - name: Install package with dev dependencies
         run: pip install -e ".[dev]"
 
-      - name: Install type stubs
-        run: pip install types-python-dateutil
-
       - name: Run mypy type checking
         run: mypy src/pytcsschemahelper
 
