@@ -15,36 +15,36 @@
 **Duration:** 2-3 days
 
 ### 1.1 Repository Setup
-- [ ] Create GitHub repository `pytcsschemahelper`
-- [ ] Add CC0 LICENSE file
-- [ ] Create initial README.md with project description
-- [ ] Set up `.gitignore` (Python template)
+- [x] Create GitHub repository `pytcsschemahelper`
+- [x] Add CC0 LICENSE file
+- [x] Create initial README.md with project description
+- [x] Set up `.gitignore` (Python template)
 
 ### 1.2 Project Configuration
-- [ ] Create `pyproject.toml` with:
+- [x] Create `pyproject.toml` with:
   - Project metadata (name, version, description, authors)
   - CC0-1.0 license
   - Python version requirements (>=3.9)
   - Dependencies (pydantic, jsonschema, python-dateutil, typing-extensions)
   - Optional dependencies (cli, dev, docs)
   - Build system configuration (hatchling or setuptools)
-- [ ] Create `src/pytcsschemahelper/__init__.py` with version
-- [ ] Add `py.typed` marker for PEP 561
+- [x] Create `src/pytcsschemahelper/__init__.py` with version
+- [x] Add `py.typed` marker for PEP 561
 
 ### 1.3 Development Environment
-- [ ] Create `requirements-dev.txt` or use pyproject.toml extras
-- [ ] Set up pre-commit hooks (`.pre-commit-config.yaml`):
+- [x] Create `requirements-dev.txt` or use pyproject.toml extras
+- [x] Set up pre-commit hooks (`.pre-commit-config.yaml`):
   - ruff (linting + formatting)
   - mypy (type checking)
-- [ ] Create `ruff.toml` configuration
-- [ ] Create `mypy.ini` configuration
+- [x] Create `ruff.toml` configuration
+- [x] Create `mypy.ini` configuration
 
 ### 1.4 CI/CD Pipeline
-- [ ] Create `.github/workflows/ci.yml`:
+- [x] Create `.github/workflows/ci.yml`:
   - Run tests on Python 3.9, 3.10, 3.11, 3.12, 3.13
   - Run linting and type checking
   - Generate coverage report
-- [ ] Create `.github/workflows/release.yml`:
+- [x] Create `.github/workflows/release.yml`:
   - Build package on tag
   - Publish to PyPI
 
@@ -250,7 +250,7 @@
 **Duration:** 3-4 days
 
 ### 8.1 README
-- [ ] Write comprehensive README.md:
+- [x] Write comprehensive README.md:
   - Badges (PyPI, CI, coverage)
   - Installation instructions
   - Quick start example
