@@ -56,7 +56,7 @@
 **Duration:** 5-7 days
 
 ### 2.1 Version Enums & Constants
-- [ ] Create `src/pytcsschemahelper/versions.py`:
+- [x] Create `src/pytcsschemahelper/versions.py`:
   - `ReportingOrgVersion` enum
   - `EmissionsReportVersion` enum
   - `TCSVersion` enum
